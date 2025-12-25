@@ -7,7 +7,6 @@ import {
     SidebarTrigger,
 } from "@/components/ui/sidebar"
 import { redirect } from "next/navigation"
-import { CookieDebugger } from "@/components/cookie-debugger"
 import { getSession } from "@/lib/auth"
 
 // Disable caching to always read fresh session from cookies
@@ -27,7 +26,6 @@ export default async function DashboardLayout({
 
     return (
         <SidebarProvider>
-            <CookieDebugger />
             <AppSidebar user={{ role: session.role || "USER" }} />
             <SidebarInset>
                 <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12 border-b">

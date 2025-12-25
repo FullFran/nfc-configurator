@@ -12,7 +12,9 @@ interface LoginFormProps {
     next: string;
 }
 
-import { CookieDebugger } from "@/components/cookie-debugger";
+interface LoginFormProps {
+    next: string;
+}
 
 export default function LoginForm({ next }: LoginFormProps) {
     const [email, setEmail] = useState("");
@@ -36,8 +38,9 @@ export default function LoginForm({ next }: LoginFormProps) {
             const data = await res.json();
 
             if (res.ok) {
-                router.refresh();
-                router.push(next);
+                // Force a hard navigation to ensure cookies are properly set by the browser
+                // This fixes the issue where client-side navigation (router.push) drops the cookie
+                window.location.href = next;
             } else {
                 setError(data.error || "Credenciales inválidas");
             }
@@ -50,7 +53,6 @@ export default function LoginForm({ next }: LoginFormProps) {
 
     return (
         <div className="flex min-h-screen items-center justify-center bg-background p-4">
-            <CookieDebugger />
             <Card className="w-full max-w-md">
                 <CardHeader>
                     <CardTitle className="text-2xl">Iniciar Sesión</CardTitle>

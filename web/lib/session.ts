@@ -13,7 +13,7 @@ export const sessionOptions: SessionOptions = {
     cookieOptions: {
         secure: true, // Required for SameSite: "none"
         maxAge: 60 * 60 * 24 * 7, // 1 week
-        httpOnly: false, // TEMPORARY: Allow client JS to see cookie for debugging
+        httpOnly: true,
         sameSite: "none", // Allow cross-site to avoid lax blocking issues
         path: "/", // Ensure cookie is sent on all routes
     },
