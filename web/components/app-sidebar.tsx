@@ -116,7 +116,7 @@ export function AppSidebar({ user, ...props }: AppSidebarProps) {
                 <SidebarMenu>
                     <SidebarMenuItem>
                         <SidebarMenuButton asChild tooltip="Cerrar Sesión">
-                            <Link href="/logout">
+                            <Link href="/logout" prefetch={false}>
                                 <LogOut className="size-4" />
                                 <span>Cerrar Sesión</span>
                             </Link>
