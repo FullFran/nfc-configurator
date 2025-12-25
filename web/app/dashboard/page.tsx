@@ -1,4 +1,3 @@
-import { redirect } from "next/navigation";
 import { getSession } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { assets } from "@/lib/db/schema";
@@ -13,11 +12,8 @@ import { QRDownloadButton } from "@/components/qr-download-button";
 export const dynamic = 'force-dynamic';
 
 export default async function DashboardPage() {
+    // Middleware handles auth redirect
     const session = await getSession();
-
-    if (!session.isLoggedIn) {
-        redirect("/login");
-    }
 
     const userAssets = await db
         .select()

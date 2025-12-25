@@ -7,7 +7,6 @@ import {
     SidebarTrigger,
 } from "@/components/ui/sidebar"
 import { getSession } from "@/lib/auth"
-import { redirect } from "next/navigation"
 
 // Disable caching to always read fresh session from cookies
 export const dynamic = 'force-dynamic';
@@ -17,11 +16,8 @@ export default async function DashboardLayout({
 }: {
     children: React.ReactNode
 }) {
+    // Middleware handles auth redirect, this is just for getting user data
     const session = await getSession();
-
-    if (!session.isLoggedIn) {
-        redirect("/login");
-    }
 
     return (
         <SidebarProvider>
