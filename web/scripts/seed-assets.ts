@@ -1,11 +1,9 @@
+import "dotenv/config";
 import { nanoid } from "nanoid";
 import { db } from "../lib/db";
 import { assets, users } from "../lib/db/schema";
-import * as dotenv from "dotenv";
 import bcrypt from "bcryptjs";
 import { eq } from "drizzle-orm";
-
-dotenv.config();
 
 const TOTAL_ASSETS = 20; // Reduced for testing
 
