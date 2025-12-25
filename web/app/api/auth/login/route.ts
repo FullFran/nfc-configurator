@@ -1,0 +1,39 @@
+import { NextRequest, NextResponse } from "next/server";
+import { db } from "@/lib/db";
+import { users } from "@/lib/db/schema";
+import { eq } from "drizzle-orm";
+import bcrypt from "bcryptjs";
+import { getSession } from "@/lib/auth";
+
+export async function POST(req: NextRequest) {
+    try {
+        const { email, password } = await req.json();
+
+        if (!email || !password) {
+            return NextResponse.json({ error: "Missing fields" }, { status: 400 });
+        }
+
+        const [user] = await db.select().from(users).where(eq(users.email, email));
+
+        if (!user) {
+            return NextResponse.json({ error: "Invalid credentials" }, { status: 401 });
+        }
+
+        const isPasswordValid = await bcrypt.compare(password, user.passwordHash);
+
+        if (!isPasswordValid) {
+            return NextResponse.json({ error: "Invalid credentials" }, { status: 401 });
+        }
+
+        const session = await getSession();
+        session.userId = user.id;
+        session.email = user.email;
+        session.isLoggedIn = true;
+        await session.save();
+
+        return NextResponse.json({ success: true });
+    } catch (error) {
+        console.error("Login error:", error);
+        return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+    }
+}
