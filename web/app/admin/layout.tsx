@@ -26,7 +26,8 @@ export default async function AdminLayout({
     }
 
     if (session.role !== "ADMIN") {
-        redirect("/dashboard");
+        return <div className="p-10 text-red-500 font-bold">DEBUG: Access Denied (Not Admin)</div>;
+        // redirect("/dashboard");
     }
 
     return (
