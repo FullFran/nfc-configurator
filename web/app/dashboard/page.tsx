@@ -1,3 +1,4 @@
+import { redirect } from "next/navigation";
 import { getSession } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { assets } from "@/lib/db/schema";
@@ -12,8 +13,13 @@ import { QRDownloadButton } from "@/components/qr-download-button";
 export const dynamic = 'force-dynamic';
 
 export default async function DashboardPage() {
-    // Middleware handles auth redirect
+    // Middleware handles auth redirect, this is just for getting user data
+    // Update: Middleware check removed, layout handles it, but page needs it too to prevent DB errors
     const session = await getSession();
+
+    if (!session.isLoggedIn) {
+        redirect("/login");
+    }
 
     const userAssets = await db
         .select()
