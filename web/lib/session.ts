@@ -8,13 +8,12 @@ export interface SessionData {
 }
 
 export const sessionOptions: SessionOptions = {
-    // Hardcoded password for debugging production environment issues
-    password: "complex_password_at_least_32_characters_long_for_debug",
-    cookieName: "nfc_config_session",
+    password: process.env.SESSION_PASSWORD || "complex_password_at_least_32_characters_long",
+    cookieName: "nfc_session_debug", // New name to force fresh cookie
     cookieOptions: {
         secure: true, // Required for SameSite: "none"
         maxAge: 60 * 60 * 24 * 7, // 1 week
-        httpOnly: true,
+        httpOnly: false, // TEMPORARY: Allow client JS to see cookie for debugging
         sameSite: "none", // Allow cross-site to avoid lax blocking issues
         path: "/", // Ensure cookie is sent on all routes
     },

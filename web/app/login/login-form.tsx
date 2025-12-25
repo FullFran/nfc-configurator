@@ -12,6 +12,8 @@ interface LoginFormProps {
     next: string;
 }
 
+import { CookieDebugger } from "@/components/cookie-debugger";
+
 export default function LoginForm({ next }: LoginFormProps) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -48,6 +50,7 @@ export default function LoginForm({ next }: LoginFormProps) {
 
     return (
         <div className="flex min-h-screen items-center justify-center bg-background p-4">
+            <CookieDebugger />
             <Card className="w-full max-w-md">
                 <CardHeader>
                     <CardTitle className="text-2xl">Iniciar Sesión</CardTitle>
