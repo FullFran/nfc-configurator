@@ -27,7 +27,7 @@ describe('Edge Resolver GET /t/[publicId]', () => {
         });
 
         const req = new NextRequest(`http://localhost/t/${publicId}`);
-        const response = await resolverGET(req, { params: { publicId } });
+        const response = await resolverGET(req, { params: Promise.resolve({ publicId }) });
 
         expect(response.status).toBe(307); // NextResponse.redirect uses 307 by default
         expect(response.headers.get('location')).toBe(destinationUrl);
@@ -42,7 +42,7 @@ describe('Edge Resolver GET /t/[publicId]', () => {
         });
 
         const req = new NextRequest(`http://localhost/t/${publicId}`);
-        const response = await resolverGET(req, { params: { publicId } });
+        const response = await resolverGET(req, { params: Promise.resolve({ publicId }) });
 
         expect(response.status).toBe(307);
         expect(response.headers.get('location')).toContain(`/activar?id=${publicId}`);
@@ -57,7 +57,7 @@ describe('Edge Resolver GET /t/[publicId]', () => {
         });
 
         const req = new NextRequest(`http://localhost/t/${publicId}`);
-        const response = await resolverGET(req, { params: { publicId } });
+        const response = await resolverGET(req, { params: Promise.resolve({ publicId }) });
 
         expect(response.status).toBe(307);
         expect(response.headers.get('location')).toContain('/error/disabled');
@@ -72,7 +72,7 @@ describe('Edge Resolver GET /t/[publicId]', () => {
         });
 
         const req = new NextRequest(`http://localhost/t/${publicId}`);
-        const response = await resolverGET(req, { params: { publicId } });
+        const response = await resolverGET(req, { params: Promise.resolve({ publicId }) });
 
         expect(response.status).toBe(307);
         expect(response.headers.get('location')).toContain('/404');

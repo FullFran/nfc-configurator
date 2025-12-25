@@ -1,14 +1,20 @@
 import { redirect } from "next/navigation";
 import { getSession } from "@/lib/auth";
-import ClaimForm from "./claim-form";
 
-export default async function ActivarPage() {
+export default async function ActivarPage({
+    searchParams,
+}: {
+    searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}) {
     const session = await getSession();
+    const params = await searchParams;
 
     if (!session.isLoggedIn) {
         // Redirect to login with a hint of where to return
-        redirect("/login?next=/activar");
+        const next = params.id ? `/activar?id=${params.id}` : "/activar";
+        redirect(`/login?next=${encodeURIComponent(next)}`);
     }
 
-    return <ClaimForm />;
+    const queryString = params.id ? `?id=${params.id}` : "";
+    redirect(`/dashboard/activar${queryString}`);
 }

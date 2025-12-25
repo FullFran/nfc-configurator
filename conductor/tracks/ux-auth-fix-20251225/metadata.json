@@ -1,0 +1,7 @@
+{
+    "track_id": "ux-auth-fix-20251225",
+    "type": "Feature",
+    "status": "new",
+    "created_at": "2025-12-25T17:36:00Z",
+    "description": "Improve navigation with a sidebar and fix auth persistence"
+}

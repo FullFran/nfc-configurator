@@ -12,6 +12,7 @@ export const sessionOptions: SessionOptions = {
     cookieName: "nfc_config_session",
     cookieOptions: {
         secure: process.env.NODE_ENV === "production",
+        maxAge: 60 * 60 * 24 * 7, // 1 week
     },
 };
 

@@ -13,11 +13,11 @@
 - [x] Verify Redirect flow (Status handling). `[x]`
 
 ## Phase 3: Dashboard & Growth Loop
-- [ ] **Write Test:** User login and session. `[ ]`
-- [ ] Implement Session-based Auth (Login/Logout). `[ ]`
-- [ ] Implement `POST /api/assets/claim` logic. `[ ]`
-- [ ] Build Dashboard UI (Asset list and edit) using shadcn/ui. `[ ]`
+- [x] **Write Test:** User login and session. `[x]`
+- [x] Implement Session-based Auth (Login/Logout). `[x]`
+- [x] Implement `POST /api/assets/claim` logic. `[x]`
+- [x] Build Dashboard UI (Asset list and edit) using shadcn/ui. `[x]`
 
 ## Phase 4: Analytics & Logging
-- [ ] Implement async analytics capture in Postgres. `[ ]`
+- [x] Implement async analytics capture in Postgres. `[x]`
 - [ ] Basic stats view in Dashboard. `[ ]`
