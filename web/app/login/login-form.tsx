@@ -34,6 +34,7 @@ export default function LoginForm({ next }: LoginFormProps) {
             const data = await res.json();
 
             if (res.ok) {
+                router.refresh();
                 router.push(next);
             } else {
                 setError(data.error || "Credenciales inválidas");

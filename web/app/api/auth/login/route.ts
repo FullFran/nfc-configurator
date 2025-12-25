@@ -25,12 +25,18 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ error: "Invalid credentials" }, { status: 401 });
         }
 
+        console.log("[LOGIN] User authenticated:", user.email);
+
         const session = await getSession();
+        console.log("[LOGIN] Session before save:", { isLoggedIn: session.isLoggedIn, userId: session.userId });
+
         session.userId = user.id;
         session.email = user.email;
         session.role = user.role;
         session.isLoggedIn = true;
         await session.save();
+
+        console.log("[LOGIN] Session after save:", { isLoggedIn: session.isLoggedIn, userId: session.userId });
 
         return NextResponse.json({ success: true });
     } catch (error) {

@@ -1,89 +1,81 @@
-import { redirect } from "next/navigation";
-import { getSession } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { assets, users, redirectEvents } from "@/lib/db/schema";
-import { count, eq } from "drizzle-orm";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { count, eq, isNull, isNotNull } from "drizzle-orm";
+import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/components/ui/card";
+import { Package, Users, MousePointerClick, PackageOpen } from "lucide-react";
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
-export default async function AdminDashboardPage() {
-    const session = await getSession();
+export default async function AdminPage() {
+    // Fetch global metrics
+    const [totalAssetsResult] = await db.select({ count: count() }).from(assets);
+    const [claimedAssetsResult] = await db.select({ count: count() }).from(assets).where(isNotNull(assets.userId));
+    const [unclaimedAssetsResult] = await db.select({ count: count() }).from(assets).where(isNull(assets.userId));
+    const [totalUsersResult] = await db.select({ count: count() }).from(users);
+    const [totalClicksResult] = await db.select({ count: count() }).from(redirectEvents);
 
-    if (!session.isLoggedIn || session.role !== "ADMIN") {
-        redirect("/login");
-    }
-
-    // Basic Stats
-    const [totalAssets] = await db.select({ value: count() }).from(assets);
-    const [claimedAssets] = await db.select({ value: count() }).from(assets).where(eq(assets.status, "ACTIVE"));
-    const [totalUsers] = await db.select({ value: count() }).from(users);
-    const [totalEvents] = await db.select({ value: count() }).from(redirectEvents);
+    const stats = [
+        {
+            title: "Total Assets",
+            value: totalAssetsResult?.count ?? 0,
+            icon: Package,
+            description: "Activos en el sistema",
+        },
+        {
+            title: "Assets Reclamados",
+            value: claimedAssetsResult?.count ?? 0,
+            icon: PackageOpen,
+            description: "Vinculados a usuarios",
+        },
+        {
+            title: "Usuarios Registrados",
+            value: totalUsersResult?.count ?? 0,
+            icon: Users,
+            description: "Cuentas activas",
+        },
+        {
+            title: "Total Escaneos",
+            value: totalClicksResult?.count ?? 0,
+            icon: MousePointerClick,
+            description: "Redirecciones totales",
+        },
+    ];
 
     return (
-        <div className="container mx-auto p-6 space-y-8">
+        <div className="space-y-6 py-6">
             <div className="flex justify-between items-center">
-                <h1 className="text-3xl font-bold">Panel de Administración</h1>
-                <div className="space-x-4">
-                    <Button asChild>
-                        <Link href="/admin/assets/new">Generar Tags</Link>
-                    </Button>
+                <h2 className="text-2xl font-bold tracking-tight">Panel de Administración</h2>
+                <Button asChild>
+                    <Link href="/admin/factory">Generar Assets</Link>
+                </Button>
+            </div>
+
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+                {stats.map((stat) => (
+                    <Card key={stat.title}>
+                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                            <CardTitle className="text-sm font-medium">{stat.title}</CardTitle>
+                            <stat.icon className="h-4 w-4 text-muted-foreground" />
+                        </CardHeader>
+                        <CardContent>
+                            <div className="text-2xl font-bold">{stat.value}</div>
+                            <p className="text-xs text-muted-foreground">{stat.description}</p>
+                        </CardContent>
+                    </Card>
+                ))}
+            </div>
+
+            <Card>
+                <CardHeader>
+                    <CardTitle>Gestión de Assets</CardTitle>
+                    <CardDescription>Ver y gestionar todos los assets del sistema.</CardDescription>
+                </CardHeader>
+                <CardContent>
                     <Button variant="outline" asChild>
-                        <Link href="/dashboard">Ver mi Panel Particular</Link>
+                        <Link href="/admin/assets">Ver Todos los Assets</Link>
                     </Button>
-                </div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                <Card>
-                    <CardHeader className="pb-2">
-                        <CardTitle className="text-sm font-medium text-muted-foreground">Total Tags</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <div className="text-2xl font-bold">{totalAssets.value}</div>
-                    </CardContent>
-                </Card>
-                <Card>
-                    <CardHeader className="pb-2">
-                        <CardTitle className="text-sm font-medium text-muted-foreground">Tags Vinculados</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <div className="text-2xl font-bold">{claimedAssets.value}</div>
-                    </CardContent>
-                </Card>
-                <Card>
-                    <CardHeader className="pb-2">
-                        <CardTitle className="text-sm font-medium text-muted-foreground">Usuarios</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <div className="text-2xl font-bold">{totalUsers.value}</div>
-                    </CardContent>
-                </Card>
-                <Card>
-                    <CardHeader className="pb-2">
-                        <CardTitle className="text-sm font-medium text-muted-foreground">Redirecciones</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <div className="text-2xl font-bold">{totalEvents.value}</div>
-                    </CardContent>
-                </Card>
-            </div>
-
-            <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-6">
-                <h2 className="text-xl font-semibold mb-4">Gestión Rápida</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <Link
-                        href="/admin/assets"
-                        className="flex items-center p-4 rounded-lg border hover:bg-muted transition-colors"
-                    >
-                        <div className="flex-1">
-                            <div className="font-medium">Inventario de Tags</div>
-                            <div className="text-sm text-muted-foreground">Ver todos los IDs y Códigos de Reclamación</div>
-                        </div>
-                    </Link>
-                    {/* Placeholder for future admin tools */}
-                </div>
-            </div>
+                </CardContent>
+            </Card>
         </div>
     );
 }

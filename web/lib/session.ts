@@ -15,6 +15,7 @@ export const sessionOptions: SessionOptions = {
         maxAge: 60 * 60 * 24 * 7, // 1 week
         httpOnly: true,
         sameSite: "lax",
+        path: "/", // Ensure cookie is sent on all routes
     },
 };
 

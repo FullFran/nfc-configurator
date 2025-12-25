@@ -6,6 +6,11 @@ import { eq } from "drizzle-orm";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { CreateAssetButton } from "@/components/create-asset-button";
+import { QRDownloadButton } from "@/components/qr-download-button";
+
+// Disable caching to always read fresh session from cookies
+export const dynamic = 'force-dynamic';
 
 export default async function DashboardPage() {
     const session = await getSession();
@@ -21,6 +26,11 @@ export default async function DashboardPage() {
 
     return (
         <div className="space-y-6">
+            <div className="flex justify-between items-center">
+                <h2 className="text-2xl font-bold tracking-tight">Mis Assets</h2>
+                <CreateAssetButton />
+            </div>
+
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                 {userAssets.length === 0 ? (
                     <Card className="col-span-full p-12 flex flex-col items-center justify-center text-center">
@@ -41,9 +51,12 @@ export default async function DashboardPage() {
                                     <span className="font-semibold text-primary">Destino:</span>{" "}
                                     <span className="truncate block">{asset.destinationUrl || "No configurado"}</span>
                                 </div>
-                                <Button className="w-full" asChild>
-                                    <Link href={`/dashboard/edit/${asset.publicId}`}>Configurar</Link>
-                                </Button>
+                                <div className="flex gap-2">
+                                    <Button className="flex-1" asChild>
+                                        <Link href={`/dashboard/edit/${asset.publicId}`}>Configurar</Link>
+                                    </Button>
+                                    <QRDownloadButton publicId={asset.publicId} />
+                                </div>
                             </CardContent>
                         </Card>
                     ))
