@@ -4,7 +4,9 @@ import { sessionOptions, SessionData, defaultSession } from "./session";
 
 export async function getSession() {
     const cookieStore = await cookies();
-    console.log("[AUTH] Getting session, cookie store available:", !!cookieStore);
+    const hasCookie = cookieStore.has("nfc_config_session");
+    const cookieVal = cookieStore.get("nfc_config_session");
+    console.log("[AUTH] Getting session. Cookie present:", hasCookie, "Length:", cookieVal?.value.length || 0);
 
     const session = await getIronSession<SessionData>(cookieStore, sessionOptions);
     console.log("[AUTH] Session retrieved:", { isLoggedIn: session.isLoggedIn, userId: session.userId });

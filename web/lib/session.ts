@@ -8,7 +8,8 @@ export interface SessionData {
 }
 
 export const sessionOptions: SessionOptions = {
-    password: process.env.SESSION_PASSWORD || "complex_password_at_least_32_characters_long",
+    // Hardcoded password for debugging production environment issues
+    password: "complex_password_at_least_32_characters_long_for_debug",
     cookieName: "nfc_config_session",
     cookieOptions: {
         secure: true, // Required for SameSite: "none"
