@@ -1,5 +1,5 @@
 import { getSession } from "@/lib/auth";
-import { redirect } from "next/navigation";
+// import { redirect } from "next/navigation";
 import { AppSidebar } from "@/components/app-sidebar";
 import { DashboardBreadcrumbs } from "@/components/dashboard-breadcrumbs";
 import { Separator } from "@/components/ui/separator";
