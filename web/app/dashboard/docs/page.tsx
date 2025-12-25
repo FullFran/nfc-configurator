@@ -66,6 +66,30 @@ export default function DocsPage() {
                     <CardHeader>
                         <div className="flex items-center gap-2 mb-2">
                             <Badge variant="secondary">Paso 3</Badge>
+                            <CardTitle>Códigos QR y Actores Virtuales</CardTitle>
+                        </div>
+                        <CardDescription>
+                            Extiende la funcionalidad de tus assets más allá del chip NFC físico.
+                        </CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                        <ul className="grid gap-3">
+                            <li className="flex gap-3 text-sm">
+                                <CheckCircle2 className="size-5 text-green-500 shrink-0" />
+                                <span><strong>Descarga tu QR:</strong> En "Mis Assets", pulsa el botón de QR para descargarlo en alta calidad (PNG/SVG). Ideal para imprimir en menús o tarjetas.</span>
+                            </li>
+                            <li className="flex gap-3 text-sm">
+                                <CheckCircle2 className="size-5 text-green-500 shrink-0" />
+                                <span><strong>Activos Virtuales:</strong> ¿Necesitas un link ya? Puedes crear un activo 100% digital desde el panel y usar su QR inmediatamente, sin esperar al chip físico.</span>
+                            </li>
+                        </ul>
+                    </CardContent>
+                </Card>
+
+                <Card className="border-l-4 border-l-primary">
+                    <CardHeader>
+                        <div className="flex items-center gap-2 mb-2">
+                            <Badge variant="secondary">Paso 4</Badge>
                             <CardTitle>Análisis y Métricas</CardTitle>
                         </div>
                         <CardDescription>
