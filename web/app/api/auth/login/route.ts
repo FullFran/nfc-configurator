@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { cookies } from "next/headers";
 import { db } from "@/lib/db";
 import { users } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
@@ -35,6 +36,17 @@ export async function POST(req: NextRequest) {
         session.role = user.role;
         session.isLoggedIn = true;
         await session.save();
+
+        // MANUAL CONTROL COOKIE (To debug if iron-session is the only one failing)
+        // This bypasses iron-session entirely.
+        const cookieStore = await cookies();
+        cookieStore.set("control_cookie", "I_AM_CONTROL", {
+            secure: true,
+            httpOnly: true,
+            sameSite: "lax",
+            path: "/",
+            maxAge: 3600 // 1 hour
+        });
 
         console.log("[LOGIN] Session after save:", { isLoggedIn: session.isLoggedIn, userId: session.userId });
 
