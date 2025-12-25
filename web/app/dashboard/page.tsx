@@ -33,8 +33,8 @@ export default async function DashboardPage() {
                     <div><strong>Control Cookie:</strong> {controlCookie ? "✅ YES" : "❌ NO"} (Val: {controlCookie?.value || "null"})</div>
                 </div>
                 <p className="text-sm text-gray-600">
-                    If Control is YES but Session is NO -> Iron Session Issue.<br />
-                    If BOTH are NO -> Browser Client-Nav Issue.
+                    If Control is YES but Session is NO = Iron Session Issue.<br />
+                    If BOTH are NO = Browser Client-Nav Issue.
                 </p>
             </div>
         );
