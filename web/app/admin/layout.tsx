@@ -9,6 +9,9 @@ import {
     SidebarTrigger,
 } from "@/components/ui/sidebar";
 
+// Disable caching to always read fresh session from cookies
+export const dynamic = 'force-dynamic';
+
 export default async function AdminLayout({
     children,
 }: {
@@ -17,7 +20,11 @@ export default async function AdminLayout({
     const session = await getSession();
 
     // Strict admin-only access
-    if (!session.isLoggedIn || session.role !== "ADMIN") {
+    if (!session.isLoggedIn) {
+        redirect("/login");
+    }
+
+    if (session.role !== "ADMIN") {
         redirect("/dashboard");
     }
 

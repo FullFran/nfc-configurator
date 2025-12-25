@@ -23,6 +23,9 @@ export async function middleware(request: NextRequest) {
     }
 
     // Get session from cookie
+    // SKIP MIDDLEWARE AUTH CHECK FOR NOW - Moving to Server Components
+    /*
+    // Get session from cookie
     const response = NextResponse.next();
     const session = await getIronSession<SessionData>(request, response, sessionOptions);
 
@@ -45,8 +48,9 @@ export async function middleware(request: NextRequest) {
         console.log(`[MIDDLEWARE] Redirecting to dashboard - already authenticated`);
         return NextResponse.redirect(new URL("/dashboard", request.url));
     }
+    */
 
-    return response;
+    return NextResponse.next();
 }
 
 export const config = {
