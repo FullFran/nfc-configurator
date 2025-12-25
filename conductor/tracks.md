@@ -13,6 +13,6 @@
 *ID: qr-admin-panel-20251225* | *Link: [Open Track](./tracks/qr-admin-panel-20251225/)*
 
 ---
-## [~] Track: Fix Login Persistence
+## [x] Track: Fix Login Persistence
 *ID: fix-login-persistence-20251225* | *Link: [Open Track](./tracks/fix-login-persistence-20251225/)*
 
