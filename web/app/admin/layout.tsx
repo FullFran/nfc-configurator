@@ -21,7 +21,8 @@ export default async function AdminLayout({
 
     // Strict admin-only access
     if (!session.isLoggedIn) {
-        redirect("/login");
+        return <div className="p-10 text-red-500 font-bold">DEBUG: Session Lost in Admin Layout (Redirect Prevented)</div>;
+        // redirect("/login");
     }
 
     if (session.role !== "ADMIN") {

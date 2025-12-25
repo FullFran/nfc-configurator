@@ -18,7 +18,8 @@ export default async function DashboardPage() {
     const session = await getSession();
 
     if (!session.isLoggedIn) {
-        redirect("/login");
+        return <div className="p-10 text-red-500 font-bold">DEBUG: Session Lost in Dashboard Page (Redirect Prevented)</div>;
+        // redirect("/login");
     }
 
     const userAssets = await db
