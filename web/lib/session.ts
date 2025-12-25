@@ -3,6 +3,7 @@ import { SessionOptions } from "iron-session";
 export interface SessionData {
     userId: string;
     email: string;
+    role: "ADMIN" | "USER";
     isLoggedIn: boolean;
 }
 
@@ -17,5 +18,6 @@ export const sessionOptions: SessionOptions = {
 export const defaultSession: SessionData = {
     userId: "",
     email: "",
+    role: "USER",
     isLoggedIn: false,
 };

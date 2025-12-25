@@ -9,6 +9,7 @@ export async function getSession() {
         session.isLoggedIn = defaultSession.isLoggedIn;
         session.userId = defaultSession.userId;
         session.email = defaultSession.email;
+        session.role = defaultSession.role;
     }
 
     return session;
