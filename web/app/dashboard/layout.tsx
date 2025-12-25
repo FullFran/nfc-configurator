@@ -18,14 +18,13 @@ export default async function DashboardLayout({
 }: {
     children: React.ReactNode
 }) {
-    // ...
-
     // Check session - if not logged in, SHOW DEBUG ERROR instead of redirect
     const session = await getSession();
 
     if (!session.isLoggedIn) {
         const cookieStore = await cookies();
         const cookieVal = cookieStore.get("app_session_v3");
+        const controlCookie = cookieStore.get("control_cookie");
 
         return (
             <div className="flex flex-col items-center justify-center min-h-screen p-8 bg-red-50 text-red-900 font-mono">
@@ -34,17 +33,18 @@ export default async function DashboardLayout({
                     <p>The Server received your request but found no valid session.</p>
 
                     <div className="bg-gray-100 p-4 rounded text-sm space-y-2 text-black">
-                        <div><strong>Cookie Name:</strong> app_session_v3</div>
-                        <div><strong>Cookie Present:</strong> {cookieVal ? "YES ✅" : "NO ❌"}</div>
-                        <div><strong>Cookie Length:</strong> {cookieVal?.value.length || 0} chars</div>
+                        <div><strong>Session Cookie (Iron):</strong> app_session_v3 | {cookieVal ? "YES ✅" : "NO ❌"} (Len: {cookieVal?.value.length || 0})</div>
+                        <div><strong>Control Cookie (Manual):</strong> control_cookie | {controlCookie ? "YES ✅" : "NO ❌"} (Val: {controlCookie?.value || "null"})</div>
+                        <div>--------------------------------------------------</div>
                         <div><strong>Session UserID:</strong> {session.userId || "undefined"}</div>
                     </div>
 
                     <div className="bg-blue-50 p-4 rounded text-sm text-blue-800">
                         <strong>Diagnosis:</strong>
                         <ul className="list-disc pl-5 mt-2 space-y-1">
-                            {!cookieVal && <li>The BROWSER did not send the cookie. (Check Network Tab)</li>}
-                            {cookieVal && <li>The Cookie was sent but decryption FAILED. (Check Password/Keys)</li>}
+                            {!cookieVal && !controlCookie && <li>Wait! BOTH cookies missing? Browser is blocking EVERYTHING.</li>}
+                            {cookieVal && <li>Session Cookie Exists -> Decryption Failed! (Check Secrets)</li>}
+                            {!cookieVal && controlCookie && <li>Control Cookie Exists! -> <strong>Iron Session FAILED to set cookie.</strong></li>}
                         </ul>
                     </div>
 
