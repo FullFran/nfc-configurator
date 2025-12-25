@@ -1,8 +1,11 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { getSession } from "@/lib/auth";
 
-export default function Home() {
+export default async function Home() {
+  const session = await getSession();
+
   return (
     <div className="flex flex-col min-h-screen bg-background">
       {/* Navigation */}
@@ -13,13 +16,21 @@ export default function Home() {
           </div>
           <span className="text-xl font-bold tracking-tight">Blakia Configurator</span>
         </div>
-        <nav className="ml-auto flex gap-4 sm:gap-6">
-          <Link className="text-sm font-medium hover:text-primary transition-colors h-9 flex items-center" href="/login">
-            Iniciar Sesión
-          </Link>
-          <Link className="text-sm font-medium hover:text-primary transition-colors h-9 flex items-center" href="/register">
-            Registrarse
-          </Link>
+        <nav className="ml-auto flex gap-4 sm:gap-6 items-center">
+          {!session.isLoggedIn ? (
+            <>
+              <Link className="text-sm font-medium hover:text-primary transition-colors h-9 flex items-center" href="/login">
+                Iniciar Sesión
+              </Link>
+              <Link className="text-sm font-medium hover:text-primary transition-colors h-9 flex items-center" href="/register">
+                Registrarse
+              </Link>
+            </>
+          ) : (
+            <Link className="text-sm font-medium hover:text-primary transition-colors h-9 flex items-center" href="/dashboard">
+              Mi Panel
+            </Link>
+          )}
           <Button asChild>
             <Link href="/activar">Activar Tag</Link>
           </Button>
@@ -44,7 +55,9 @@ export default function Home() {
                   <Link href="/activar">Vincular mi primer Tag</Link>
                 </Button>
                 <Button size="lg" variant="outline" className="text-lg px-8 h-12" asChild>
-                  <Link href="/login">Acceder a mi Panel</Link>
+                  <Link href={session.isLoggedIn ? "/dashboard" : "/login"}>
+                    {session.isLoggedIn ? "Ir a mi Panel" : "Acceder a mi Panel"}
+                  </Link>
                 </Button>
               </div>
             </div>
