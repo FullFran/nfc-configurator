@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/sidebar"
 import { redirect } from "next/navigation"
 import { CookieDebugger } from "@/components/cookie-debugger"
+import { getSession } from "@/lib/auth"
 
 // Disable caching to always read fresh session from cookies
 export const dynamic = 'force-dynamic';
