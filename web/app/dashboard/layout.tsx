@@ -43,8 +43,8 @@ export default async function DashboardLayout({
                         <strong>Diagnosis:</strong>
                         <ul className="list-disc pl-5 mt-2 space-y-1">
                             {!cookieVal && !controlCookie && <li>Wait! BOTH cookies missing? Browser is blocking EVERYTHING.</li>}
-                            {cookieVal && <li>Session Cookie Exists -> Decryption Failed! (Check Secrets)</li>}
-                            {!cookieVal && controlCookie && <li>Control Cookie Exists! -> <strong>Iron Session FAILED to set cookie.</strong></li>}
+                            {cookieVal && <li>Session Cookie Exists = Decryption Failed! (Check Secrets)</li>}
+                            {!cookieVal && controlCookie && <li>Control Cookie Exists! = <strong>Iron Session FAILED to set cookie.</strong></li>}
                         </ul>
                     </div>
 
