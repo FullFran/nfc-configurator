@@ -5,9 +5,9 @@ export const runtime = "edge";
 
 export async function GET(
     req: NextRequest,
-    { params }: { params: { publicId: string } }
+    { params }: { params: Promise<{ publicId: string }> }
 ) {
-    const { publicId } = params;
+    const { publicId } = await params;
     const baseUrl = req.nextUrl.origin;
     const timestamp = Date.now().toString();
     const path = `/api/internal/resolve/${publicId}`;

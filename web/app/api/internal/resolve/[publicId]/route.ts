@@ -6,9 +6,9 @@ import { verifySignature, createMsgToSign } from "@/lib/crypto";
 
 export async function GET(
     req: NextRequest,
-    { params }: { params: { publicId: string } }
+    { params }: { params: Promise<{ publicId: string }> }
 ) {
-    const { publicId } = params;
+    const { publicId } = await params;
     const signature = req.headers.get("X-Internal-Signature");
     const timestamp = req.headers.get("X-Timestamp");
 

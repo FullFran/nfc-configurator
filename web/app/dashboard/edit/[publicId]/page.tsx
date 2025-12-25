@@ -10,14 +10,13 @@ import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import { revalidatePath } from "next/cache";
 
-export default async function EditAssetPage({ params }: { params: { publicId: string } }) {
+export default async function EditAssetPage({ params }: { params: Promise<{ publicId: string }> }) {
+    const { publicId } = await params;
     const session = await getSession();
 
     if (!session.isLoggedIn) {
         redirect("/login");
     }
-
-    const { publicId } = params;
 
     const [asset] = await db
         .select()
