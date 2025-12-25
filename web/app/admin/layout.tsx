@@ -1,5 +1,5 @@
 import { getSession } from "@/lib/auth";
-// import { redirect } from "next/navigation";
+import { redirect } from "next/navigation";
 import { AppSidebar } from "@/components/app-sidebar";
 import { DashboardBreadcrumbs } from "@/components/dashboard-breadcrumbs";
 import { Separator } from "@/components/ui/separator";
@@ -21,13 +21,11 @@ export default async function AdminLayout({
 
     // Strict admin-only access
     if (!session.isLoggedIn) {
-        return <div className="p-10 text-red-500 font-bold">DEBUG: Session Lost in Admin Layout (Redirect Prevented)</div>;
-        // redirect("/login");
+        redirect("/login");
     }
 
     if (session.role !== "ADMIN") {
-        return <div className="p-10 text-red-500 font-bold">DEBUG: Access Denied (Not Admin)</div>;
-        // redirect("/dashboard");
+        redirect("/dashboard");
     }
 
     return (

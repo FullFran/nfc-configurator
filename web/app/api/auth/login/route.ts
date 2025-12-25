@@ -37,24 +37,7 @@ export async function POST(req: NextRequest) {
         session.isLoggedIn = true;
         await session.save();
 
-        // IMMEDIATE VERIFICATION
-        const postSaveCookies = await cookies();
-        const sessionCookie = postSaveCookies.get("app_session_v3");
-        console.log("[LOGIN] Immediate Cookie Check:", sessionCookie ? "EXISTS ✅" : "MISSING ❌");
-        if (!sessionCookie) console.error("[LOGIN] CRITICAL: Session saved but cookie not found!");
-
-        // MANUAL CONTROL COOKIE (To debug if iron-session is the only one failing)
-        // This bypasses iron-session entirely.
-        const cookieStore = await cookies();
-        cookieStore.set("control_cookie", "I_AM_CONTROL", {
-            secure: true,
-            httpOnly: true,
-            sameSite: "lax",
-            path: "/",
-            maxAge: 3600 // 1 hour
-        });
-
-        console.log("[LOGIN] Session after save:", { isLoggedIn: session.isLoggedIn, userId: session.userId });
+        console.log("[LOGIN] Session saved for:", user.email);
 
         return NextResponse.json({ success: true });
     } catch (error) {

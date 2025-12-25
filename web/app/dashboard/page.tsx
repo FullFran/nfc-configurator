@@ -1,4 +1,4 @@
-// import { redirect } from "next/navigation";
+import { redirect } from "next/navigation";
 import { getSession } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { assets } from "@/lib/db/schema";
@@ -18,26 +18,7 @@ export default async function DashboardPage() {
     const session = await getSession();
 
     if (!session.isLoggedIn) {
-        // Redundant check because Layout skipped on soft-nav.
-        // We need the diagnostics HERE too.
-        const { cookies } = await import("next/headers");
-        const cookieStore = await cookies();
-        const cookieVal = cookieStore.get("app_session_v3");
-        const controlCookie = cookieStore.get("control_cookie");
-
-        return (
-            <div className="p-8 space-y-4 border-2 border-red-500 rounded m-4 bg-white text-black">
-                <h2 className="text-xl font-bold text-red-600">DEBUG: Page-Level Session Check Failed</h2>
-                <div className="bg-gray-100 p-4 rounded text-sm space-y-2">
-                    <div><strong>Session Cookie:</strong> {cookieVal ? "✅ YES" : "❌ NO"} (Len: {cookieVal?.value.length || 0})</div>
-                    <div><strong>Control Cookie:</strong> {controlCookie ? "✅ YES" : "❌ NO"} (Val: {controlCookie?.value || "null"})</div>
-                </div>
-                <p className="text-sm text-gray-600">
-                    If Control is YES but Session is NO = Iron Session Issue.<br />
-                    If BOTH are NO = Browser Client-Nav Issue.
-                </p>
-            </div>
-        );
+        redirect("/login");
     }
 
     const userAssets = await db

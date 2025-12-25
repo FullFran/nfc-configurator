@@ -8,12 +8,11 @@ export interface SessionData {
 }
 
 export const sessionOptions: SessionOptions = {
-    // FORCE HARDCODED PASSWORD TO ELIMINATE ENV VAR FAILURE
-    password: "complex_password_at_least_32_characters_long_verified",
+    password: process.env.SESSION_PASSWORD || "complex_password_at_least_32_characters_long",
     cookieName: "app_session_v3", // Fresh name
     cookieOptions: {
         secure: true, // Force Secure to avoid potential NODE_ENV mismatch
-        maxAge: 3600, // Match Control Cookie (1 hour)
+        maxAge: 60 * 60 * 24 * 7, // 1 week
         httpOnly: true,
         sameSite: "lax", // Standard first-party behavior
         path: "/",
